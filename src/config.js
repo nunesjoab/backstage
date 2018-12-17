@@ -1,7 +1,7 @@
 module.exports = {
   kafka: {
     producer: {
-      'metadata.broker.list': '172.20.0.13:9092',
+      'metadata.broker.list': '172.20.0.3:9092',
       'compression.codec': 'gzip',
       'retry.backoff.ms': 200,
       'message.send.max.retries': 10,
@@ -14,17 +14,17 @@ module.exports = {
 
     consumer: {
       'group.id': 'data-broker',
-      'metadata.broker.list': '172.20.0.13:9092',
+      'metadata.broker.list': '172.20.0.3:9092',
     },
   },
   databroker: {
-    host: 'http://172.20.0.16:80',
+    host: 'http://172.20.0.15:80',
   },
   auth: {
-    host: 'http://172.20.0.19:5000',
+    host: 'http://172.20.0.11:5000',
   },
   deviceManager: {
-    host: 'http://172.20.0.18:5000',
+    host: 'http://172.20.0.8:5000',
   },
   dojot: {
     managementService: 'internal',
@@ -37,9 +37,9 @@ module.exports = {
 };
 
 /*
-export KAFKA_HOSTS=172.20.0.12:9092
-export DATA_BROKER_URL=http://172.20.0.7
-export AUTH_URL=http://172.20.0.5:5000
-export DEVICE_MANAGER_URL=http://172.20.0.6:5000
+export KAFKA_HOSTS=172.20.0.3:9092
+export DATA_BROKER_URL=http://172.20.0.15
+export AUTH_URL=http://172.20.0.11:5000
+export DEVICE_MANAGER_URL=http://172.20.0.8:5000
 
 */
