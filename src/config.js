@@ -1,45 +1,10 @@
-module.exports = {
-  kafka: {
-    producer: {
-      'metadata.broker.list': '172.20.0.3:9092',
-      'compression.codec': 'gzip',
-      'retry.backoff.ms': 200,
-      'message.send.max.retries': 10,
-      'socket.keepalive.enable': true,
-      'queue.buffering.max.messages': 100000,
-      'queue.buffering.max.ms': 1000,
-      'batch.num.messages': 1000000,
-      dr_cb: true,
-    },
-
-    consumer: {
-      'group.id': 'data-broker',
-      'metadata.broker.list': '172.20.0.3:9092',
-    },
-  },
-  databroker: {
-    host: 'http://172.20.0.15:80',
-  },
-  auth: {
-    host: 'http://172.20.0.11:5000',
-  },
-  deviceManager: {
-    host: 'http://172.20.0.8:5000',
-  },
-  dojot: {
-    managementService: 'internal',
-    subjects: {
-      tenancy: 'dojot.tenancy',
-      devices: 'dojot.device-manager.template',
-      deviceData: 'device-data',
-    },
-  },
+const config = {
+  port: process.env.PORT || 3005,
+  postgres_user: process.env.POSTGRES_USER || 'postgres',
+  postgres_host: process.env.POSTGRES_HOST || '172.20.0.3',
+  postgres_database: process.env.POSTGRES_DATABASE || 'dojot_devm',
+  postgres_password: process.env.POSTGRES_PASSWORD || 'postgres',
+  postgres_port: process.env.POSTGRES_PORT || 5432,
 };
 
-/*
-export KAFKA_HOSTS=172.20.0.3:9092
-export DATA_BROKER_URL=http://172.20.0.15
-export AUTH_URL=http://172.20.0.11:5000
-export DEVICE_MANAGER_URL=http://172.20.0.8:5000
-
-*/
+export default config;
