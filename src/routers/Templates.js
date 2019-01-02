@@ -4,8 +4,7 @@ import templateService from '../services/TemplatesService';
 const router = Router();
 
 router.get('/checkConflits', (req, res) => {
-  console.log(req.query);
-  templateService.checkConflits(1, req.service)
+  templateService.checkConflits(req.query.ids, req.service)
     .then((data) => {
       res.send(data);
     })
