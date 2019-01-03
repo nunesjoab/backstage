@@ -11,7 +11,7 @@ install:
   - npm install
 
 script:
-  - dredd --hookfiles=./src/docs/hook.js
+  - npm test
 
 after_success:
   - docker run --volume $(pwd)/src/docs:/home/node/apiary:Z giovannicuriel/aglio -i /home/node/apiary/apiary.apib -o - > ./apiary_${TRAVIS_BRANCH}.html
