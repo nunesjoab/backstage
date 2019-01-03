@@ -24,3 +24,26 @@ Returns all templates conflicting with other templates in attribute name.
             {
                 "message": "message"
             }
+
+### Checking if there is a conflicting templates [GET /checkConflits?ids=(1)]
+Returns all templates conflicting with other templates in attribute name (with query).
++ Request (application/json; charset=utf-8)
+  + Headers
+
+            Authorization: Bearer JWT
+
++ Response 200 (application/json; charset=utf-8)
+
+  + Body
+
+            {
+                1: [1, 2, 3],
+            }
+
++ Response 400 (application/json; charset=utf-8)
+
+  + Body
+
+            {
+                "message": "message"
+            }
