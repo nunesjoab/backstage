@@ -1,24 +1,20 @@
 # Gui Helper
 
-## Import [/import]
+## Check conflits [/checkConflits]
 
-### Configure a new templates, devices and flows [POST /import]
-Returns all currently configured flows
+### Checking if there is a conflicting templates [GET /checkConflits]
+Returns all templates conflicting with other templates in attribute name.
 + Request (application/json; charset=utf-8)
   + Headers
 
             Authorization: Bearer JWT
-
-  + Body
-
-            {
-            }
 
 + Response 200 (application/json; charset=utf-8)
 
   + Body
 
             {
+                1: [1, 2, 3],
             }
 
 + Response 400 (application/json; charset=utf-8)

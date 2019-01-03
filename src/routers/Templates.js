@@ -9,7 +9,7 @@ router.get('/checkConflits', (req, res) => {
       res.send(data);
     })
     .catch((err) => {
-      res.sendStatus(400).json(err);
+      res.sendStatus(400).json({ mesage: err });
     });
 });
 

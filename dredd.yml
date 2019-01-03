@@ -1,9 +1,9 @@
 dry-run: null
 hookfiles: null
-language: !<tag:yaml.org,2002:js/undefined> ''
+language: nodejs
 sandbox: false
-server: npm start
-server-wait: 3
+server: npm run startTest
+server-wait: 20
 init: false
 custom: {}
 names: false
