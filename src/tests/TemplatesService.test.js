@@ -5,18 +5,18 @@ import db from '../db/index';
 test('Test the query functions', () => {
   // eslint-disable-next-line no-undef
   db.query = jest.fn().mockResolvedValue({
-    rows: [{ template_id: 1, conflit: 2 },
-      { template_id: 1, conflit: 3 },
-      { template_id: 1, conflit: 4 },
-      { template_id: 1, conflit: 5 },
-      { template_id: 1, conflit: 6 },
-      { template_id: 1, conflit: 7 },
-      { template_id: 1, conflit: 8 },
-      { template_id: 1, conflit: 9 },
-      { template_id: 1, conflit: 10 }],
+    rows: [{ template_id: 1, conflict: 2 },
+      { template_id: 1, conflict: 3 },
+      { template_id: 1, conflict: 4 },
+      { template_id: 1, conflict: 5 },
+      { template_id: 1, conflict: 6 },
+      { template_id: 1, conflict: 7 },
+      { template_id: 1, conflict: 8 },
+      { template_id: 1, conflict: 9 },
+      { template_id: 1, conflict: 10 }],
   });
 
-  templateService.checkConflits(1, 'admin')
+  templateService.checkconflicts(1, 'admin')
     .then((data) => {
       // eslint-disable-next-line no-undef
       expect(data).toMatchObject({
@@ -24,7 +24,7 @@ test('Test the query functions', () => {
       });
     });
 
-  templateService.checkConflits(undefined, 'admin')
+  templateService.checkconflicts(undefined, 'admin')
     .then((data) => {
       // eslint-disable-next-line no-undef
       expect(data).toMatchObject({
@@ -38,7 +38,7 @@ test('Test the query functions', () => {
     query: 'data not found',
   });
 
-  templateService.checkConflits(undefined, 'admin')
+  templateService.checkconflicts(undefined, 'admin')
     .catch((err) => {
       // eslint-disable-next-line no-undef
       expect(err).toMatchObject({
@@ -49,7 +49,7 @@ test('Test the query functions', () => {
   // eslint-disable-next-line no-undef
   db.query = 1;
 
-  templateService.checkConflits(undefined, 'admin')
+  templateService.checkconflicts(undefined, 'admin')
     .catch((err) => {
       // eslint-disable-next-line no-undef
       expect(err).toBeInstanceOf(Error);

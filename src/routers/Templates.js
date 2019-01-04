@@ -3,8 +3,8 @@ import templateService from '../services/TemplatesService';
 
 const router = Router();
 
-router.get('/checkConflits', (req, res) => {
-  templateService.checkConflits(req.query.ids, req.service)
+router.get('/checkconflicts', (req, res) => {
+  templateService.checkconflicts(req.query.ids, req.service)
     .then((data) => {
       res.send(data);
     })
