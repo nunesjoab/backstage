@@ -59,6 +59,7 @@ out
 
 # editor
 .vscode
+.idea
 
 # SQLITE
 **/*.sqlite
