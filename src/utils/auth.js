@@ -8,7 +8,7 @@ const getToken = (tenant) => {
     Buffer.from('dummy signature', 'base64').toString()}`;
 };
 
-const b64decode = (data) => {
+export const b64decode = (data) => {
   if (typeof Buffer.from === 'function') {
     return Buffer.from(data, 'base64').toString();
   }

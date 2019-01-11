@@ -1,7 +1,28 @@
-import {GraphQLObjectType, GraphQLString, GraphQLSchema, GraphQLList} from 'graphql';
+import {
+  GraphQLObjectType, GraphQLString, GraphQLSchema, GraphQLList,
+} from 'graphql';
 import axios from 'axios';
-import {PermissionType, PermissionUtils} from './permissions';
-import {baseUrl} from '../GraphQLConfig';
+import PermissionsHelper from './helpers/permissions';
+import { baseUrl } from '../GraphQLConfig';
+import { b64decode } from '../../utils/auth';
+
+const params = {
+  jwt: null,
+};
+const REQ_HEADER = { 'content-type': 'application/json', Authorization: `Bearer ${params.jwt}` };
+
+/**
+ *
+ * @type {GraphQLObjectType}
+ *
+ */
+const PermissionType = new GraphQLObjectType({
+  name: 'Permission',
+  fields: {
+    subject: { type: GraphQLString },
+    actions: { type: new GraphQLList(GraphQLString) },
+  },
+});
 
 /**
  *
@@ -10,29 +31,24 @@ import {baseUrl} from '../GraphQLConfig';
 const UserType = new GraphQLObjectType({
   name: 'User',
   fields: () => ({
-    username: {type: GraphQLString},
-    email: {type: GraphQLString},
-    id: {type: GraphQLString},
-    profile: {type: GraphQLString},
+    username: { type: GraphQLString },
+    id: { type: GraphQLString },
+    profile: { type: GraphQLString },
     permissions: {
       type: new GraphQLList(PermissionType),
       resolve(parentValue) {
         if (parentValue.profile !== 'admin') {
           const options = {
             method: 'GET',
-            headers: {'content-type': 'application/json', 'Authorization': `Bearer ${parentValue.jwt}`},
+            headers: REQ_HEADER,
             url: `${baseUrl}/auth/pap/group/${parentValue.profile}/permissions`,
           };
-          return axios(options).then(res => {
-            return PermissionUtils.parsePermissions(res);
-          })
-        } else {
-          return PermissionUtils.parsePermissionsAdmin();
+          return axios(options).then(res => PermissionsHelper.parsePermissions(res));
         }
-
-      }
-    }
-  })
+        return PermissionsHelper.parsePermissionsAdmin();
+      },
+    },
+  }),
 });
 
 /**
@@ -42,19 +58,18 @@ const UserType = new GraphQLObjectType({
 const LoginType = new GraphQLObjectType({
   name: 'Login',
   fields: () => ({
-    jwt: {type: GraphQLString},
+    jwt: { type: GraphQLString },
     user: {
       type: UserType,
       resolve(parentValue) {
-        const options = {
-          method: 'GET',
-          headers: {'content-type': 'application/json', 'Authorization': `Bearer ${parentValue.jwt}`},
-          url: `${baseUrl}/auth/user/${parentValue.username}`,
+        return {
+          username: parentValue.user.username,
+          id: parentValue.user.userid,
+          profile: parentValue.user.profile,
         };
-        return axios(options).then(res => res.data.user)
-      }
-    }
-  })
+      },
+    },
+  }),
 });
 
 /**
@@ -66,12 +81,11 @@ const RootQuery = new GraphQLObjectType({
   fields: {
     user: {
       type: LoginType,
-      args: {id: {type: GraphQLString}},
-      resolve(parentValue, args) {
-
-      }
-    }
-  }
+      args: { id: { type: GraphQLString } },
+      resolve() {
+      },
+    },
+  },
 });
 
 /**
@@ -83,18 +97,20 @@ const mutation = new GraphQLObjectType({
   fields: {
     login: {
       type: LoginType,
-      args: {username: {type: GraphQLString}, passwd: {type: GraphQLString}},
-      resolve(parentValue, {username, passwd}) {
-        return axios.post(`${baseUrl}/auth`, {username, passwd})
-          .then(resp => {
-            return {jwt: resp.data.jwt, username}
+      args: { username: { type: GraphQLString }, passwd: { type: GraphQLString } },
+      resolve(parentValue, { username, passwd }) {
+        return axios.post(`${baseUrl}/auth`, { username, passwd })
+          .then((resp) => {
+            const user = JSON.parse(b64decode(resp.data.jwt.split('.')[1]));
+            params.jwt = resp.data.jwt;
+            return { jwt: resp.data.jwt, user };
           });
-      }
-    }
-  }
+      },
+    },
+  },
 });
 
 module.exports = new GraphQLSchema({
   mutation,
-  query: RootQuery
+  query: RootQuery,
 });
