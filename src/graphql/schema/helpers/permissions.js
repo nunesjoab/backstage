@@ -7,7 +7,7 @@ export default class PermissionsHelper {
    * @param res
    * @returns {Array}
    */
-  static parsePermissions(res) {
+  static parsePermissionsCaslLogin(res) {
     const caslArrayPermissions = [];
     const permissionsGroupByPath = _.groupBy(res.data.permissions, 'path');
     Object.keys(permissionsGroupByPath).forEach((key) => {
@@ -25,7 +25,7 @@ export default class PermissionsHelper {
    *
    * @returns {Array}
    */
-  static parsePermissionsAdmin() {
+  static parsePermissionsAdminCaslLogin() {
     // if group is admin, create all permissions
     const caslArrayPermissions = [];
     Object.keys(mapPermissionsJson).forEach((key) => {

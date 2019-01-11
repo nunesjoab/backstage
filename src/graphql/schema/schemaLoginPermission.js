@@ -1,7 +1,8 @@
 import {
-  GraphQLObjectType, GraphQLString, GraphQLSchema, GraphQLList,
+  GraphQLList, GraphQLObjectType, GraphQLSchema, GraphQLString,
 } from 'graphql';
 import axios from 'axios';
+import { GraphQLInputObjectType } from 'graphql/type/definition';
 import PermissionsHelper from './helpers/permissions';
 import { baseUrl } from '../GraphQLConfig';
 import { b64decode } from '../../utils/auth';
@@ -11,6 +12,18 @@ const params = {
 };
 const REQ_HEADER = { 'content-type': 'application/json', Authorization: `Bearer ${params.jwt}` };
 
+function getUserFromJwt(jwt) {
+  return JSON.parse(b64decode(jwt.split('.')[1]));
+}
+
+function extractJwtFromRequest(context) {
+  return context.header('authorization') ? context.header('authorization').replace('Bearer ', '') : '';
+}
+
+function jwt(context) {
+  params.jwt = extractJwtFromRequest(context);
+}
+
 /**
  *
  * @type {GraphQLObjectType}
@@ -18,6 +31,14 @@ const REQ_HEADER = { 'content-type': 'application/json', Authorization: `Bearer 
  */
 const PermissionType = new GraphQLObjectType({
   name: 'Permission',
+  fields: {
+    subject: { type: GraphQLString },
+    actions: { type: new GraphQLList(GraphQLString) },
+  },
+});
+
+const PermissionType2 = new GraphQLInputObjectType({
+  name: 'Permission2',
   fields: {
     subject: { type: GraphQLString },
     actions: { type: new GraphQLList(GraphQLString) },
@@ -43,9 +64,9 @@ const UserType = new GraphQLObjectType({
             headers: REQ_HEADER,
             url: `${baseUrl}/auth/pap/group/${parentValue.profile}/permissions`,
           };
-          return axios(options).then(res => PermissionsHelper.parsePermissions(res));
+          return axios(options).then(res => PermissionsHelper.parsePermissionsCaslLogin(res));
         }
-        return PermissionsHelper.parsePermissionsAdmin();
+        return PermissionsHelper.parsePermissionsAdminCaslLogin();
       },
     },
   }),
@@ -101,10 +122,24 @@ const mutation = new GraphQLObjectType({
       resolve(parentValue, { username, passwd }) {
         return axios.post(`${baseUrl}/auth`, { username, passwd })
           .then((resp) => {
-            const user = JSON.parse(b64decode(resp.data.jwt.split('.')[1]));
+            const user = getUserFromJwt(resp.data.jwt);
             params.jwt = resp.data.jwt;
             return { jwt: resp.data.jwt, user };
           });
+      },
+    },
+    permissions: {
+      type: new GraphQLList(PermissionType),
+      args: {
+        permissions: {
+          type: new GraphQLList(PermissionType2),
+        },
+        groupName: { type: GraphQLString },
+      },
+      resolve(parentValue, { permissions, groupName }, context) {
+        console.log('test groupName', permissions, groupName);
+        jwt(context);
+        return PermissionsHelper.parsePermissionsAdminCaslLogin();
       },
     },
   },
