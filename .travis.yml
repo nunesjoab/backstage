@@ -7,7 +7,6 @@ cache:
   - node_modules
 
 install:
-  - npm install -g dredd
   - npm install
 
 script:
@@ -15,14 +14,8 @@ script:
 
 after_success:
   - docker run --volume $(pwd)/src/docs:/home/node/apiary:Z giovannicuriel/aglio -i /home/node/apiary/apiary.apib -o - > ./apiary_${TRAVIS_BRANCH}.html
-  - chmod +x travis/publish.sh
+  - chmod +x src/travis/publish.sh
+  - chmod +x src/travis/deploy-gh-pages.sh
   - docker build -t ${TRAVIS_REPO_SLUG} -f DockerFile .
-  - travis/publish.sh
-
-deploy:
-  provider: pages
-  skip-cleanup: true
-  github-token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
-  keep-history: true
-  on:
-    branch: ${TRAVIS_BRANCH}
+  - src/travis/publish.sh
+  - src/travis/deploy-gh-pages.sh

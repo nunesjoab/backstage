@@ -11,10 +11,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/eliasreis54/gui-helper.git"
+    "url": "https://github.com/dojot/backstage.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Elias Reis <efreis@cpqd.com.br>",
+  "license": "GPL-3.0",
   "dependencies": {
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
