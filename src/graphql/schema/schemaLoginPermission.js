@@ -84,7 +84,7 @@ const RootQuery = new GraphQLObjectType({
 	},
 });
 
-async function initPermissions(groupName) {
+const initPermissions = async (groupName) => {
 	try {
 		const prom1 = axios(optionsAxios(UTIL.GET, '/auth/pap/permission?type=system')).then((res) => {
 			params.permissionsSystem = res.data.permissions;
@@ -96,7 +96,7 @@ async function initPermissions(groupName) {
 	} catch (e) {
 		console.log(e);
 	}
-}
+};
 
 const ResponseOutput = new GraphQLObjectType({
 	name: 'ResponseOutput',
