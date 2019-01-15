@@ -1,5 +1,5 @@
-import { Router } from 'express';
-import templateService from '../services/TemplatesService';
+const { Router } = require('express');
+const templateService = require('../services/TemplatesService');
 
 const router = Router();
 
@@ -13,5 +13,5 @@ router.get('/checkconflicts', (req, res) => {
     });
 });
 
-
-export default router;
+/*export default router;*/
+module.exports = router;

@@ -8,7 +8,7 @@ const getToken = (tenant) => {
     Buffer.from('dummy signature', 'base64').toString()}`;
 };
 
-export const b64decode = (data) => {
+const b64decode = (data) => {
   if (typeof Buffer.from === 'function') {
     return Buffer.from(data, 'base64').toString();
   }
@@ -67,4 +67,6 @@ const authEnforce = (req, res, next) => {
   return next();
 };
 
-export default { authParse, authEnforce, getToken };
+module.exports = { authParse, authEnforce, getToken , b64decode};
+/*
+export default { authParse, authEnforce, getToken };*/

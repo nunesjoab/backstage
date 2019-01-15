@@ -7,4 +7,4 @@ const config = {
   postgres_port: process.env.POSTGRES_PORT || 5432,
 };
 
-export default config;
+module.exports = config;
