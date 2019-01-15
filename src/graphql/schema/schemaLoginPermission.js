@@ -4,32 +4,22 @@ const {
 const axios = require('axios');
 const {GraphQLInputObjectType} = require('graphql/type/definition');
 const _ = require('lodash');
-const PermissionsHelper = require('./helpers/permissions');
-const {baseUrl} = require('../GraphQLConfig');
-const {b64decode} = require('../../utils/auth');
+const PermissionsHelper = require('./helpers/PermissionsHelper');
 const mapPermissionsJson = require('./utils/MapPermissions');
+const UTIL = require('./utils/GraphQLUtils');
+const {baseUrl} = require('../GraphQLConfig');
 
 const params = {
 	jwt: null,
 	permissionsGroupOld: [],
 	permissionsSystem: [],
 };
-const REQ_HEADER = {'content-type': 'application/json', Authorization: `Bearer ${params.jwt}`};
-
-function getUserFromJwt(jwt) {
-	return JSON.parse(b64decode(jwt.split('.')[1]));
-}
-
-function jwt(context) {
-	params.jwt = context.header('authorization') ? context.header('authorization').replace('Bearer ', '') : '';
-	/*console.log('params.jwt context', params.jwt);*/
-}
-
-function getPermissionId(path, method, arrPermissions) {
-	const permissionsSystemByPath = _.groupBy(arrPermissions, 'path');
-	return permissionsSystemByPath[path].find(g => g.method === method && g.permission === 'permit').id;
-}
-
+const optionsAxios = ((method, url) =>
+		UTIL.optionsAxios(method, url, params.jwt)
+);
+const setJWT = ((context) =>
+		params.jwt = UTIL.setJWT(context)
+);
 
 const PermissionTypeOutput = new GraphQLObjectType({
 	name: 'PermissionOut',
@@ -38,6 +28,7 @@ const PermissionTypeOutput = new GraphQLObjectType({
 		actions: {type: new GraphQLList(GraphQLString)},
 	},
 });
+
 const PermissionTypeInput = new GraphQLInputObjectType({
 	name: 'PermissionIn',
 	fields: {
@@ -46,10 +37,6 @@ const PermissionTypeInput = new GraphQLInputObjectType({
 	},
 });
 
-/**
- *
- * @type {GraphQLObjectType}
- */
 const UserType = new GraphQLObjectType({
 	name: 'User',
 	fields: () => ({
@@ -60,12 +47,7 @@ const UserType = new GraphQLObjectType({
 			type: new GraphQLList(PermissionTypeOutput),
 			resolve(parentValue) {
 				if (parentValue.profile !== 'admin') {
-					const options = {
-						method: 'GET',
-						headers: REQ_HEADER,
-						url: `${baseUrl}/auth/pap/group/${parentValue.profile}/permissions`,
-					};
-					return axios(options).then(res => PermissionsHelper.parsePermissionsCaslLogin(res));
+					return axios(optionsAxios(UTIL.GET, `/auth/pap/group/${parentValue.profile}/permissions`)).then(res => PermissionsHelper.parsePermissionsCaslLogin(res));
 				}
 				return PermissionsHelper.parsePermissionsAdminCaslLogin();
 			},
@@ -73,10 +55,6 @@ const UserType = new GraphQLObjectType({
 	}),
 });
 
-/**
- *
- * @type {GraphQLObjectType}
- */
 const LoginType = new GraphQLObjectType({
 	name: 'Login',
 	fields: () => ({
@@ -94,10 +72,6 @@ const LoginType = new GraphQLObjectType({
 	}),
 });
 
-/**
- *
- * @type {GraphQLObjectType}
- */
 const RootQuery = new GraphQLObjectType({
 	name: 'RootQueryType',
 	fields: {
@@ -110,19 +84,12 @@ const RootQuery = new GraphQLObjectType({
 	},
 });
 
-const method = {
-	GET: 'GET',
-	POST: 'POST',
-	DELETE: 'DELETE',
-};
-
-
 async function initPermissions(groupName) {
 	try {
-		const prom1 = axios(optionsAxios(method.GET, '/auth/pap/permission?type=system')).then((res) => {
+		const prom1 = axios(optionsAxios(UTIL.GET, '/auth/pap/permission?type=system')).then((res) => {
 			params.permissionsSystem = res.data.permissions;
 		});
-		const prom2 = axios(optionsAxios(method.GET, `/auth/pap/group/${groupName}/permissions`)).then((res) => {
+		const prom2 = axios(optionsAxios(UTIL.GET, `/auth/pap/group/${groupName}/permissions`)).then((res) => {
 			params.permissionsGroupOld = res.data.permissions;
 		});
 		await Promise.all([prom1, prom2]);
@@ -130,18 +97,6 @@ async function initPermissions(groupName) {
 		console.log(e);
 	}
 }
-
-
-function optionsAxios(method, path) {
-	const REQ_HEADER2 = {'content-type': 'application/json', Authorization: `Bearer ${params.jwt}`};
-	return {
-		'method': method,
-		headers: REQ_HEADER2,
-		url: `${baseUrl}${path}`,
-	};
-}
-
-/*message: 'ok', status: 200*/
 
 const ResponseOutput = new GraphQLObjectType({
 	name: 'ResponseOutput',
@@ -155,7 +110,7 @@ const ResponseOutput = new GraphQLObjectType({
 
 
 function updatePermAssociation(permNew, permId, groupName, subjectAlias, actionAlias, response) {
-	return axios(optionsAxios(permNew ? method.POST : method.DELETE, `/auth/pap/grouppermissions/${groupName}/${permId}`)).then((res) => {
+	return axios(optionsAxios(permNew ? UTIL.POST : UTIL.DELETE, `/auth/pap/grouppermissions/${groupName}/${permId}`)).then((res) => {
 		response.push({
 			message: res.data.message,
 			status: res.data.status,
@@ -167,10 +122,6 @@ function updatePermAssociation(permNew, permId, groupName, subjectAlias, actionA
 	});
 }
 
-/**
- *
- * @type {GraphQLObjectType}
- */
 const mutation = new GraphQLObjectType({
 	name: 'Mutation',
 	fields: {
@@ -180,7 +131,7 @@ const mutation = new GraphQLObjectType({
 			resolve(parentValue, {username, passwd}) {
 				return axios.post(`${baseUrl}/auth`, {username, passwd})
 					.then((resp) => {
-						const user = getUserFromJwt(resp.data.jwt);
+						const user = UTIL.getUserFromJwt(resp.data.jwt);
 						params.jwt = resp.data.jwt;
 						return {jwt: resp.data.jwt, user};
 					});
@@ -195,13 +146,12 @@ const mutation = new GraphQLObjectType({
 				groupName: {type: GraphQLString},
 			},
 			resolve: async (parentValue, {permissions, groupName}, context) => {
-				jwt(context);
-				let response = [];
-				let promises = [];
+				setJWT(context);
 				return await initPermissions(groupName).then(async () => {
+					let response = [];
+					let promises = [];
 
 					const permissionsGroupOld = _.groupBy(params.permissionsGroupOld, 'path');
-
 					params.permissionsSystem.forEach((item) => {
 						if (mapPermissionsJson[item.path]) {
 

@@ -3,10 +3,10 @@ const mapPermissionsJson = require('../utils/MapPermissions');
 
 class PermissionsHelper {
 	/**
-   *
-   * @param res
-   * @returns {Array}
-   */
+	 *
+	 * @param res
+	 * @returns {Array}
+	 */
 	static parsePermissionsCaslLogin(res) {
 		const caslArrayPermissions = [];
 		const permissionsGroupByPath = _.groupBy(res.data.permissions, 'path');
@@ -21,10 +21,15 @@ class PermissionsHelper {
 		return caslArrayPermissions;
 	}
 
+	static getPermissionId(path, method, arrPermissions) {
+		const permissionsSystemByPath = _.groupBy(arrPermissions, 'path');
+		return permissionsSystemByPath[path].find(g => g.method === method && g.permission === 'permit').id;
+	}
+
 	/**
-   *
-   * @returns {Array}
-   */
+	 *
+	 * @returns {Array}
+	 */
 	static parsePermissionsAdminCaslLogin() {
 		// if group is admin, create all permissions
 		const caslArrayPermissions = [];
