@@ -1,6 +1,6 @@
 const config = {
-	/*address: 'http://apigw',*/
-	address: 'http://localhost',
+	address: 'http://apigw',
+/*	address: 'http://localhost',*/
 	port: '8000',
 };
 

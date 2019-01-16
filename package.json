@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest --coverage && codecov",
     "dev": "nodemon src/index.js",
-    "start": "node src/index.js"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
