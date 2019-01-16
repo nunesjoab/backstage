@@ -1,7 +1,7 @@
 const {b64decode} = require('../../../utils/auth');
 const {baseUrl} = require('../../GraphQLConfig');
 
-class GraphQLUtils {
+class Utils {
 
 	static get GET() {
 		return 'GET';
@@ -32,4 +32,4 @@ class GraphQLUtils {
 	}
 }
 
-module.exports = GraphQLUtils;
+module.exports = Utils;

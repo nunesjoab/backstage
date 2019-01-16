@@ -1,14 +1,17 @@
-const {Router}  = require('express');
-
+const {Router} = require('express');
 const expressGraphQL = require('express-graphql');
-const schemaLoginPermission = require('../graphql/schema/Schema');
+const {schemaLogin, schemaPermission} = require('../graphql/schema/Schema');
 
 const router = Router();
 
-router.use('/auth/graphql', expressGraphQL({
-  schema: schemaLoginPermission,
-  graphiql: true,
+router.use('/graphql/auth/', expressGraphQL({
+	schema: schemaLogin,
+	graphiql: false,
 }));
 
-/*export default router;*/
+router.use('/graphql/permissions', expressGraphQL({
+	schema: schemaPermission,
+	graphiql: true,
+}));
+
 module.exports = router;

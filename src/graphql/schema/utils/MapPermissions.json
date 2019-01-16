@@ -1,74 +1,74 @@
 {
   "/auth/user/(.*)": {
-    "action": "user",
+    "subject": "user",
     "(.*)": {
-      "method": "modifier"
+      "action": "modifier"
     },
     "GET": {
-      "method": "viewer"
+      "action": "viewer"
     }
   },
   "/device/(.*)": {
-    "action": "device",
+    "subject": "device",
     "(.*)": {
-      "method": "modifier"
+      "action": "modifier"
     },
     "GET": {
-      "method": "viewer"
+      "action": "viewer"
     }
   },
   "/flows/(.*)": {
-    "action": "flows",
+    "subject": "flows",
     "(.*)": {
-      "method": "modifier"
+      "action": "modifier"
     },
     "GET": {
-      "method": "viewer"
+      "action": "viewer"
     }
   },
   "/history/(.*)": {
-    "action": "history",
+    "subject": "history",
     "(.*)": {
-      "method": "modifier"
+      "action": "modifier"
     },
     "GET": {
-      "method": "viewer"
+      "action": "viewer"
     }
   },
   "/mashup/(.*)": {
-    "action": "mashup",
+    "subject": "mashup",
     "(.*)": {
-      "method": "modifier"
+      "action": "modifier"
     },
     "GET": {
-      "method": "viewer"
+      "action": "viewer"
     }
   },
   "/metric/(.*)": {
-    "action": "metric",
+    "subject": "metric",
     "(.*)": {
-      "method": "modifier"
+      "action": "modifier"
     },
     "GET": {
-      "method": "viewer"
+      "action": "viewer"
     }
   },
   "/pap/(.*)": {
-    "action": "permission",
+    "subject": "permission",
     "(.*)": {
-      "method": "modifier"
+      "action": "modifier"
     },
     "GET": {
-      "method": "viewer"
+      "action": "viewer"
     }
   },
   "/template/(.*)": {
-    "action": "template",
+    "subject": "template",
     "(.*)": {
-      "method": "modifier"
+      "action": "modifier"
     },
     "GET": {
-      "method": "viewer"
+      "action": "viewer"
     }
   }
 }
