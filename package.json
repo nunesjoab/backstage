@@ -10,10 +10,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/eliasreis54/gui-helper.git"
+    "url": "https://github.com/dojot/backstage.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Elias Reis <efreis@cpqd.com.br>",
+  "license": "GPL-3.0",
   "dependencies": {
     "axios": "^0.18.0",
     "body-parser": "^1.18.3",
