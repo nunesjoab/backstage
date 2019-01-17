@@ -110,7 +110,7 @@ const LoginType = new GraphQLObjectType({
   name: 'Login',
   description: 'Object with token and infos about the user',
   fields: () => ({
-    token: { type: GraphQLString, description: 'JWT token' },
+    jwt: { type: GraphQLString, description: 'JWT token' },
     user: {
       type: UserType,
       resolve: LoginResolve,
@@ -269,7 +269,7 @@ const LoginMutation = new GraphQLObjectType({
         return axios.post(`${config.base_url_graphql}/auth`, { username, passwd })
           .then((resp) => {
             setToken(resp.data.token);
-            return { token: resp.data.jwt, user: getUser(resp.data.jwt) };
+            return { jwt: resp.data.jwt, user: getUser(resp.data.jwt) };
           }).catch((e) => {
             console.log(e);
           });
