@@ -67,7 +67,16 @@ const PermissionInput = new GraphQLInputObjectType({
   },
 });
 
-/**
+const UserResolve = async (parentValue) => {
+  if (parentValue.profile !== ADMIN_GROUP_NAME) {
+    return axios(optionsAxios(UTIL.GET, `/auth/pap/group/${parentValue.profile}/permissions`)).then(res => PermissionsHelper.parsePermissionsFromAuthBack(res.data.permissions)).catch((e) => {
+      console.log(e);
+    });
+  }
+  await axiosPermissionsSystem();
+  return PermissionsHelper.parsePermissionsFromAuthBack(params.permissionsSystem);
+};
+  /**
  *  Join the info about user, with permissions of that user.
  *  If the user is of group admin, will be return all permissions available
  * @type {GraphQLObjectType}
@@ -82,17 +91,15 @@ const UserType = new GraphQLObjectType({
     service: { type: GraphQLString },
     permissions: {
       type: new GraphQLList(PermissionOutput),
-      resolve: async (parentValue) => {
-        if (parentValue.profile !== ADMIN_GROUP_NAME) {
-          return axios(optionsAxios(UTIL.GET, `/auth/pap/group/${parentValue.profile}/permissions`)).then(res => PermissionsHelper.parsePermissionsFromAuthBack(res.data.permissions)).catch((e) => {
-            console.log(e);
-          });
-        }
-        await axiosPermissionsSystem();
-        return PermissionsHelper.parsePermissionsFromAuthBack(params.permissionsSystem);
-      },
+      resolve: UserResolve,
     },
   }),
+});
+
+const LoginResolve = parentValue => ({
+  username: parentValue.user.username,
+  id: parentValue.user.userid,
+  profile: parentValue.user.profile,
 });
 
 /**
@@ -106,13 +113,7 @@ const LoginType = new GraphQLObjectType({
     token: { type: GraphQLString, description: 'JWT token' },
     user: {
       type: UserType,
-      resolve(parentValue) {
-        return {
-          username: parentValue.user.username,
-          id: parentValue.user.userid,
-          profile: parentValue.user.profile,
-        };
-      },
+      resolve: LoginResolve,
     },
   }),
 });
@@ -137,6 +138,15 @@ const Response = new GraphQLObjectType({
  *  or if  group is empty  the all permissions available.
  * @type {GraphQLObjectType}
  */
+const permissionQueryResove = async (parentValue, { group }, context) => {
+  setToken(context.token);
+  if (group && group !== ADMIN_GROUP_NAME) {
+    await axiosPermissionsGroup(group);
+    return PermissionsHelper.parsePermissionsFromAuthBack(params.permissionsGroupOld);
+  }
+  await axiosPermissionsSystem();
+  return PermissionsHelper.parsePermissionsFromAuthBack(params.permissionsSystem);
+};
 const PermissionsRootQuery = new GraphQLObjectType({
   name: 'PermissionsRootQuery',
   description: ' ',
@@ -147,15 +157,7 @@ const PermissionsRootQuery = new GraphQLObjectType({
       args: {
         group: { type: GraphQLString, description: 'Name or id of group' },
       },
-      resolve: async (parentValue, { group }, context) => {
-        setToken(context.token);
-        if (group && group !== ADMIN_GROUP_NAME) {
-          await axiosPermissionsGroup(group);
-          return PermissionsHelper.parsePermissionsFromAuthBack(params.permissionsGroupOld);
-        }
-        await axiosPermissionsSystem();
-        return PermissionsHelper.parsePermissionsFromAuthBack(params.permissionsSystem);
-      },
+      resolve: permissionQueryResove,
     },
   },
 });
@@ -183,7 +185,7 @@ const initPermissions = async (group) => {
  * @param group The name of group will be associated
  * @param subjectAlias The alias of subject (in mapPermissions.Json)
  * @param actionAlias The alias of action (in mapPermissions.Json)
- * @returns The promise and the response
+ * @returns {promise: (*|Promise<T | never>), response: *} promise and the response
  */
 function updatePermAssociation(isCreate, permId, group, subjectAlias, actionAlias) {
   let response = null;
@@ -199,6 +201,35 @@ function updatePermAssociation(isCreate, permId, group, subjectAlias, actionAlia
   });
   return { promise, response };
 }
+
+const PermissionsMutationResolve = async (parentValue, { permissions, group }, context) => {
+  setToken(context.token);
+  return initPermissions(group).then(async () => {
+    const responses = [];
+    const promises = [];
+    const permissionsGroupOld = _.groupBy(params.permissionsGroupOld, 'path');
+    params.permissionsSystem.forEach((item) => {
+      if (PermissionsHelper.patchExist(item.path)) {
+        const subjectAlias = PermissionsHelper.getSubjectAlias(item.path);
+        const actionAlias = PermissionsHelper.getActionAlias(item.path, item.method);
+
+        const permOld = _.find(permissionsGroupOld[item.path], g => g.method === item.method && g.permission === 'permit');
+        const permNew = _.find(permissions, g => g.subject === subjectAlias && _.find(g.actions, h => h === actionAlias));
+        if (permOld && permNew) {
+          return;
+        }
+        if (permOld || permNew) {
+          const permId = item.id;
+          const { promise, response } = updatePermAssociation(permNew, permId, group, subjectAlias, actionAlias);
+          responses.push(response);
+          promises.push(promise);
+        }
+      }
+    });
+    await Promise.all(promises);
+    return responses;
+  });
+};
 
 /**
  *  This mutation save (create or delete) the associated between permissions and groups
@@ -217,34 +248,7 @@ const PermissionsMutation = new GraphQLObjectType({
         },
         group: { type: GraphQLString, description: 'Name or id of group' },
       },
-      resolve: async (parentValue, { permissions, group }, context) => {
-        setToken(context.token);
-        return initPermissions(group).then(async () => {
-          const responses = [];
-          const promises = [];
-          const permissionsGroupOld = _.groupBy(params.permissionsGroupOld, 'path');
-          params.permissionsSystem.forEach((item) => {
-            if (PermissionsHelper.patchExist(item.path)) {
-              const subjectAlias = PermissionsHelper.getSubjectAlias(item.path);
-              const actionAlias = PermissionsHelper.getActionAlias(item.path, item.method);
-
-              const permOld = _.find(permissionsGroupOld[item.path], g => g.method === item.method && g.permission === 'permit');
-              const permNew = _.find(permissions, g => g.subject === subjectAlias && _.find(g.actions, h => h === actionAlias));
-              if (permOld && permNew) {
-                return;
-              }
-              if (permOld || permNew) {
-                const permId = item.id;
-                const { promise, response } = updatePermAssociation(permNew, permId, group, subjectAlias, actionAlias);
-                responses.push(response);
-                promises.push(promise);
-              }
-            }
-          });
-          await Promise.all(promises);
-          return responses;
-        });
-      },
+      resolve: PermissionsMutationResolve,
     },
   },
 });
