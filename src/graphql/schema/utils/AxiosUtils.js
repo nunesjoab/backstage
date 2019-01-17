@@ -1,6 +1,6 @@
-const { baseUrl } = require('../../GraphQLConfig');
+const { baseUrlGraphQL } = require('../../../config');
 
-class Utils {
+class AxiosUtils {
   static get GET() {
     return 'GET';
   }
@@ -17,9 +17,9 @@ class Utils {
     return {
       method,
       headers: { 'content-type': 'application/json', Authorization: `${token}` },
-      url: `${baseUrl}${url}`,
+      url: `${baseUrlGraphQL}${url}`,
     };
   }
 }
 
-module.exports = Utils;
+module.exports = AxiosUtils;

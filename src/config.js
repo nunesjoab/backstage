@@ -5,6 +5,10 @@ const config = {
   postgres_database: process.env.POSTGRES_DATABASE || 'dojot_devm',
   postgres_password: process.env.POSTGRES_PASSWORD || 'postgres',
   postgres_port: process.env.POSTGRES_PORT || 5432,
+  addressDocker: 'http://localhost',
+  portDocker: '8000',
 };
 
-module.exports = config;
+const baseUrlGraphQL = `${config.addressDocker}:${config.portDocker}`;
+
+module.exports = { baseUrlGraphQL, config };
