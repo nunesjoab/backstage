@@ -1,4 +1,4 @@
-const db  = require('../db');
+const db = require('../db');
 
 const checkconflicts = (id, tenant) => new Promise((resolve, reject) => {
   try {
@@ -32,4 +32,3 @@ const checkconflicts = (id, tenant) => new Promise((resolve, reject) => {
   }
 });
 module.exports = { checkconflicts };
-/*export default { checkconflicts };*/
