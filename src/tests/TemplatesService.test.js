@@ -1,6 +1,7 @@
 const templateService = require('../services/TemplatesService');
 const db = require('../db/index');
 
+
 // eslint-disable-next-line no-undef
 test('Test the query functions', () => {
   // eslint-disable-next-line no-undef

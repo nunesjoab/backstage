@@ -1,3 +1,7 @@
+const configGraphQL = {
+  local_url: process.env.LOCAL_URL || 'http://apigw',
+  local_port: process.env.LOCAL_PORT || '8000',
+};
 const config = {
   port: process.env.PORT || 3005,
   postgres_user: process.env.POSTGRES_USER || 'postgres',
@@ -5,10 +9,7 @@ const config = {
   postgres_database: process.env.POSTGRES_DATABASE || 'dojot_devm',
   postgres_password: process.env.POSTGRES_PASSWORD || 'postgres',
   postgres_port: process.env.POSTGRES_PORT || 5432,
-  addressDocker: 'http://localhost',
-  portDocker: '8000',
+  base_url_graphql: `${configGraphQL.local_url}:${configGraphQL.local_port}`,
 };
 
-const baseUrlGraphQL = `${config.addressDocker}:${config.portDocker}`;
-
-module.exports = { baseUrlGraphQL, config };
+module.exports = config;

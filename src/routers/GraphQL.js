@@ -10,7 +10,7 @@ const router = Router();
  */
 router.use('/graphql/auth/', expressGraphQL({
   schema: schemaLogin,
-  graphiql: true, // graph interface
+  graphiql: true, // graphql interface
 }));
 
 /**
@@ -18,7 +18,7 @@ router.use('/graphql/auth/', expressGraphQL({
  */
 router.use('/graphql/permissions', expressGraphQL({
   schema: schemaPermission,
-  graphiql: true, // graph interface
+  graphiql: true, // graphql interface
 }));
 
 module.exports = router;

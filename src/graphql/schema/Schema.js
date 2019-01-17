@@ -6,7 +6,7 @@ const _ = require('lodash');
 const PermissionsHelper = require('./helpers/PermissionsHelper');
 const UTIL = require('./utils/AxiosUtils');
 const { userDataByToken } = require('../../utils/auth');
-const { baseUrlGraphQL } = require('../../config');
+const config = require('../../config');
 
 const params = {
   token: null,
@@ -266,7 +266,7 @@ const LoginMutation = new GraphQLObjectType({
       description: 'Login in to the dojot and response with infos about user and theirs permissions. ',
       args: { username: { type: GraphQLString }, passwd: { type: GraphQLString } },
       resolve(parentValue, { username, passwd }) {
-        return axios.post(`${baseUrlGraphQL}/auth`, { username, passwd })
+        return axios.post(`${config.base_url_graphql}/auth`, { username, passwd })
           .then((resp) => {
             setToken(resp.data.token);
             return { token: resp.data.jwt, user: getUser(resp.data.jwt) };
