@@ -69,16 +69,16 @@ const PermissionInput = new GraphQLInputObjectType({
 
 const UserResolve = async (parentValue) => {
   if (parentValue.profile !== ADMIN_GROUP_NAME) {
-    return axios(optionsAxios(UTIL.GET, `/auth/pap/group/${parentValue.profile}/permissions`)).then(res => PermissionsHelper.parsePermissionsFromAuthBack(res.data.permissions)).catch((e) => {
+    return axios(UTIL.optionsAxios(UTIL.GET, `/auth/pap/group/${parentValue.profile}/permissions`, config.base_auth_url_graphql)).then(res => PermissionsHelper.parsePermissionsFromAuthBack(res.data.permissions)).catch((e) => {
       console.log(e);
     });
   }
   await axiosPermissionsSystem();
   return PermissionsHelper.parsePermissionsFromAuthBack(params.permissionsSystem);
 };
-  /**
+/**
  *  Join the info about user, with permissions of that user.
- *  If the user is of group admin, will be return all permissions available 
+ *  If the user is of group admin, will be return all permissions available
  * @type {GraphQLObjectType}
  */
 const UserType = new GraphQLObjectType({
@@ -266,7 +266,7 @@ const LoginMutation = new GraphQLObjectType({
       description: 'Login in to the dojot and response with infos about user and theirs permissions. ',
       args: { username: { type: GraphQLString }, passwd: { type: GraphQLString } },
       resolve(parentValue, { username, passwd }) {
-        return axios.post(`${config.base_url_graphql}/auth`, { username, passwd })
+        return axios.post(`${config.base_local_url_graphql}/auth`, { username, passwd })
           .then((resp) => {
             setToken(resp.data.token);
             return { jwt: resp.data.jwt, user: getUser(resp.data.jwt) };

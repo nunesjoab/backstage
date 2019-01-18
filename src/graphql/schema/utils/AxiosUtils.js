@@ -13,11 +13,11 @@ class AxiosUtils {
     return 'DELETE';
   }
 
-  static optionsAxios(method, url, token) {
+  static optionsAxios(method, url, token, baseUrl = config.base_local_url_graphql) {
     return {
       method,
-      headers: { 'content-type': 'application/json', Authorization: `${token}` },
-      url: `${config.base_url_graphql}${url}`,
+      headers: {'content-type': 'application/json', Authorization: `${token}`},
+      url: `${baseUrl}${url}`,
     };
   }
 }
