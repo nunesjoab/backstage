@@ -78,7 +78,7 @@ const UserResolve = async (parentValue) => {
 };
   /**
  *  Join the info about user, with permissions of that user.
- *  If the user is of group admin, will be return all permissions available
+ *  If the user is of group admin, will be return all permissions available 
  * @type {GraphQLObjectType}
  */
 const UserType = new GraphQLObjectType({
