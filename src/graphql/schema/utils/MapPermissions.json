@@ -1,0 +1,74 @@
+{
+  "/auth/user/(.*)": {
+    "subject": "user",
+    "(.*)": {
+      "action": "modifier"
+    },
+    "GET": {
+      "action": "viewer"
+    }
+  },
+  "/device/(.*)": {
+    "subject": "device",
+    "(.*)": {
+      "action": "modifier"
+    },
+    "GET": {
+      "action": "viewer"
+    }
+  },
+  "/flows/(.*)": {
+    "subject": "flows",
+    "(.*)": {
+      "action": "modifier"
+    },
+    "GET": {
+      "action": "viewer"
+    }
+  },
+  "/history/(.*)": {
+    "subject": "history",
+    "(.*)": {
+      "action": "modifier"
+    },
+    "GET": {
+      "action": "viewer"
+    }
+  },
+  "/mashup/(.*)": {
+    "subject": "mashup",
+    "(.*)": {
+      "action": "modifier"
+    },
+    "GET": {
+      "action": "viewer"
+    }
+  },
+  "/metric/(.*)": {
+    "subject": "metric",
+    "(.*)": {
+      "action": "modifier"
+    },
+    "GET": {
+      "action": "viewer"
+    }
+  },
+  "/pap/(.*)": {
+    "subject": "permission",
+    "(.*)": {
+      "action": "modifier"
+    },
+    "GET": {
+      "action": "viewer"
+    }
+  },
+  "/template/(.*)": {
+    "subject": "template",
+    "(.*)": {
+      "action": "modifier"
+    },
+    "GET": {
+      "action": "viewer"
+    }
+  }
+}

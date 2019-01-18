@@ -27,6 +27,16 @@ class InvalidTokenError {
   }
 }
 
+function userDataByToken(rawToken) {
+  const tokenData = JSON.parse(b64decode(rawToken.split('.')[1]));
+  return {
+    username: tokenData.username,
+    userid: tokenData.userid,
+    profile: tokenData.profile,
+    service: tokenData.service,
+  };
+}
+
 const authParse = (req, res, next) => {
   const rawToken = req.get('authorization');
   if (rawToken === undefined) {
@@ -39,11 +49,8 @@ const authParse = (req, res, next) => {
     return res.status(401).send(new InvalidTokenError());
   }
 
-  const tokenData = JSON.parse(b64decode(token[1]));
-
-  req.user = tokenData.username;
-  req.userid = tokenData.userid;
-  req.service = tokenData.service;
+  req.token = rawToken;
+  req.user = userDataByToken(rawToken);
   return next();
 };
 
@@ -63,8 +70,9 @@ const authEnforce = (req, res, next) => {
     // valid token must be supplied
     return res.status(401).send(new UnauthorizedError());
   }
-
   return next();
 };
 
-export default { authParse, authEnforce, getToken };
+module.exports = {
+  authParse, authEnforce, getToken, b64decode, userDataByToken,
+};

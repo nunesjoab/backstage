@@ -1,5 +1,5 @@
-import { Pool } from 'pg';
-import config from '../config';
+const { Pool } = require('pg');
+const config = require('../config');
 
 const pool = new Pool({
   user: config.postgres_user,
@@ -9,4 +9,4 @@ const pool = new Pool({
   port: config.postgres_port,
 });
 
-export default pool;
+module.exports = pool;

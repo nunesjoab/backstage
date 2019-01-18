@@ -1,5 +1,6 @@
-import templateService from '../services/TemplatesService';
-import db from '../db/index';
+const templateService = require('../services/TemplatesService');
+const db = require('../db/index');
+
 
 // eslint-disable-next-line no-undef
 test('Test the query functions', () => {

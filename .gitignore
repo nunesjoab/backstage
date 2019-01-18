@@ -59,9 +59,11 @@ out
 
 # editor
 .vscode
+.idea
 
 # SQLITE
 **/*.sqlite
 
 # Text files
 **/*.txt
+
