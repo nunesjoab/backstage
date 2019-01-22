@@ -70,5 +70,14 @@
     "GET": {
       "action": "viewer"
     }
+  },
+  "/fw-image/(.*)": {
+    "subject": "fw-image",
+    "(.*)": {
+      "action": "modifier"
+    },
+    "GET": {
+      "action": "viewer"
+    }
   }
 }
