@@ -8,8 +8,29 @@
       "action": "viewer"
     }
   },
+  "/ca/(.*)": {
+    "subject": "ca",
+    "GET": {
+      "action": "viewer"
+    }
+  },
+  "/sign/(.*)": {
+    "subject": "ca-sign",
+    "POST": {
+      "action": "viewer"
+    }
+  },
   "/device/(.*)": {
     "subject": "device",
+    "(.*)": {
+      "action": "modifier"
+    },
+    "GET": {
+      "action": "viewer"
+    }
+  },
+  "/export/(.*)": {
+    "subject": "export",
     "(.*)": {
       "action": "modifier"
     },
@@ -35,8 +56,8 @@
       "action": "viewer"
     }
   },
-  "/mashup/(.*)": {
-    "subject": "mashup",
+  "/import/(.*)": {
+    "subject": "import",
     "(.*)": {
       "action": "modifier"
     },
@@ -58,6 +79,12 @@
     "(.*)": {
       "action": "modifier"
     },
+    "GET": {
+      "action": "viewer"
+    }
+  },
+  "/stream/socketio/": {
+    "subject": "socketio",
     "GET": {
       "action": "viewer"
     }
