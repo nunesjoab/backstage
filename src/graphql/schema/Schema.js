@@ -27,6 +27,8 @@ const ADMIN_GROUP_NAME = 'admin';
 function axiosPermissionsSystem() {
   return axios(optionsAxios(UTIL.GET, '/auth/pap/permission?type=system')).then((res) => {
     params.permissionsSystem = res.data.permissions;
+  }).catch((error) => {
+    console.log(error);
   });
 }
 
@@ -38,6 +40,8 @@ function axiosPermissionsSystem() {
 function axiosPermissionsGroup(group) {
   return axios(optionsAxios(UTIL.GET, `/auth/pap/group/${group}/permissions`)).then((res) => {
     params.permissionsGroupOld = res.data.permissions;
+  }).catch((error) => {
+    console.log(error);
   });
 }
 
@@ -67,6 +71,12 @@ const PermissionInput = new GraphQLInputObjectType({
   },
 });
 
+/**
+ *
+ * @param parentValue
+ * @returns {Promise<*>}
+ * @constructor
+ */
 const UserResolve = async (parentValue) => {
   if (parentValue.profile !== ADMIN_GROUP_NAME) {
     return axios(UTIL.optionsAxios(UTIL.GET, `/auth/pap/group/${parentValue.profile}/permissions`, config.base_auth_url_graphql)).then(res => PermissionsHelper.parsePermissionsFromAuthBack(res.data.permissions)).catch((e) => {
@@ -138,7 +148,7 @@ const Response = new GraphQLObjectType({
  *  or if  group is empty  the all permissions available.
  * @type {GraphQLObjectType}
  */
-const permissionQueryResove = async (parentValue, { group }, context) => {
+const permissionQueryResolve = async (parentValue, { group }, context) => {
   setToken(context.token);
   if (group && group !== ADMIN_GROUP_NAME) {
     await axiosPermissionsGroup(group);
@@ -157,7 +167,7 @@ const PermissionsRootQuery = new GraphQLObjectType({
       args: {
         group: { type: GraphQLString, description: 'Name or id of group' },
       },
-      resolve: permissionQueryResove,
+      resolve: permissionQueryResolve,
     },
   },
 });

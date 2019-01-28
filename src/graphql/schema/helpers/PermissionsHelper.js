@@ -18,7 +18,7 @@ class PermissionsHelper {
         });
       }
     });
-    return arrayPermissions;
+    return arrayPermissions || [];
   }
 
   static getPermissionIdFromAuthBack(path, method, arrPermissionsFromAuthBack) {
