@@ -79,12 +79,13 @@ const PermissionInput = new GraphQLInputObjectType({
  */
 const UserResolve = async (parentValue) => {
   if (parentValue.profile !== ADMIN_GROUP_NAME) {
-    return axios(UTIL.optionsAxios(UTIL.GET, `/auth/pap/group/${parentValue.profile}/permissions`, config.base_auth_url_graphql)).then(res => PermissionsHelper.parsePermissionsFromAuthBack(res.data.permissions)).catch((e) => {
+    return axios(UTIL.optionsAxios(UTIL.GET, `/pap/group/${parentValue.profile}/permissions`, '', config.base_auth_url_graphql)).then(res => PermissionsHelper.parsePermissionsFromAuthBack(res.data.permissions)).catch((e) => {
       console.log(e);
     });
   }
-  await axiosPermissionsSystem();
-  return PermissionsHelper.parsePermissionsFromAuthBack(params.permissionsSystem);
+  return axios(UTIL.optionsAxios(UTIL.GET, '/pap/permission?type=system', '', config.base_auth_url_graphql)).then(res => PermissionsHelper.parsePermissionsFromAuthBack(res.data.permissions)).catch((e) => {
+    console.log(e);
+  });
 };
 /**
  *  Join the info about user, with permissions of that user.

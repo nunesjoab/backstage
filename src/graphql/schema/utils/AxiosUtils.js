@@ -16,7 +16,7 @@ class AxiosUtils {
   static optionsAxios(method, url, token, baseUrl = config.base_local_url_graphql) {
     return {
       method,
-      headers: {'content-type': 'application/json', Authorization: `${token}`},
+      headers: { 'content-type': 'application/json', Authorization: `${token}` },
       url: `${baseUrl}${url}`,
     };
   }
