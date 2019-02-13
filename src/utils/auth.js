@@ -3,7 +3,7 @@
 
 const getToken = (tenant) => {
   const payload = { service: tenant, username: 'backstage' };
-  return `${Buffer.from('jwt schema', 'base64').toString()}.${
+  return `${Buffer.from('jwt auth', 'base64').toString()}.${
     Buffer.from(JSON.stringify(payload), 'base64').toString()}.${
     Buffer.from('dummy signature', 'base64').toString()}`;
 };
