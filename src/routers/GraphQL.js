@@ -1,6 +1,6 @@
-const {Router} = require('express');
+const { Router } = require('express');
 const expressGraphQL = require('express-graphql');
-const {schemaLogin, schemaPermission} = require('../graphql/auth/Schema');
+const { schemaLogin, schemaPermission } = require('../graphql/auth/SchemaAuth');
 const rootSchema = require('../graphql/Schema');
 
 const router = Router();

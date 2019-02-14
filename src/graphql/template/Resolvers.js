@@ -22,9 +22,15 @@ const hasReservedLabelImg = ((attr) => {
 
 const Resolvers = {
   Query: {
+    /**
+     * Get one template by id
+     * @param root
+     * @param id
+     * @param context
+     * @returns {Promise<*>}
+     */
     async template(root, { id }, context) {
       setToken(context.token);
-      setToken('Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnZW82dVYyamQ4TmtwQ1M4a2lZUkZmSVJqS1N6Rm5MaSIsImlhdCI6MTU1MDA1ODIyMiwiZXhwIjoxNTUwMDU4NjQyLCJwcm9maWxlIjoiYWRtaW4iLCJncm91cHMiOlsxXSwidXNlcmlkIjoxLCJqdGkiOiI5YTY2MGU1N2ExNTkwNDliY2RmMzMwYjlmYmQyMjgyNiIsInNlcnZpY2UiOiJhZG1pbiIsInVzZXJuYW1lIjoiYWRtaW4ifQ.WbIVkp72R2-iQOvnLKKdyyXVi8qJJGHutB1_ZFmcY0s');
       const { data: templateData } = await axios(optionsAxios(UTIL.GET, `/template/${id}`));
       const attrImg = [];
 
@@ -73,9 +79,18 @@ const Resolvers = {
       }
       return {};
     },
+
+    /**
+     * Checks if templates has Image Firmware and return a array
+     * with objects key-value, where key is a id template and value is a boolean.
+     * The value is true if the template has image firmware.
+     * @param root
+     * @param templatesId
+     * @param context
+     * @returns {Promise<Array>}
+     */
     async templatesHasImageFirmware(root, { templatesId }, context) {
       setToken(context.token);
-      setToken('Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnZW82dVYyamQ4TmtwQ1M4a2lZUkZmSVJqS1N6Rm5MaSIsImlhdCI6MTU1MDA1ODIyMiwiZXhwIjoxNTUwMDU4NjQyLCJwcm9maWxlIjoiYWRtaW4iLCJncm91cHMiOlsxXSwidXNlcmlkIjoxLCJqdGkiOiI5YTY2MGU1N2ExNTkwNDliY2RmMzMwYjlmYmQyMjgyNiIsInNlcnZpY2UiOiJhZG1pbiIsInVzZXJuYW1lIjoiYWRtaW4ifQ.WbIVkp72R2-iQOvnLKKdyyXVi8qJJGHutB1_ZFmcY0s');
       const map = [];
       const promises = [];
       templatesId.forEach((id) => {
