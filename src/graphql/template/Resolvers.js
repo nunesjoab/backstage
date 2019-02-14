@@ -55,19 +55,18 @@ const Resolvers = {
             }
             return true;
           });
+          cleanNullMetadataToEmpty(attrs);
+          cleanNullMetadataToEmpty(attrImg);
         }
         if (configAttrs) {
           configAttrs = configAttrs.filter(attr => !hasReservedLabelImg(attr));
+          cleanNullMetadataToEmpty(configAttrs);
         }
 
         if (dataAttrs) {
           dataAttrs = dataAttrs.filter(attr => !hasReservedLabelImg(attr));
+          cleanNullMetadataToEmpty(dataAttrs);
         }
-
-        cleanNullMetadataToEmpty(attrs);
-        cleanNullMetadataToEmpty(attrImg);
-        cleanNullMetadataToEmpty(configAttrs);
-        cleanNullMetadataToEmpty(dataAttrs);
 
         return {
           ...templateData,
@@ -91,6 +90,7 @@ const Resolvers = {
      */
     async templatesHasImageFirmware(root, { templatesId }, context) {
       setToken(context.token);
+      setToken('Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnZW82dVYyamQ4TmtwQ1M4a2lZUkZmSVJqS1N6Rm5MaSIsImlhdCI6MTU1MDA1ODIyMiwiZXhwIjoxNTUwMDU4NjQyLCJwcm9maWxlIjoiYWRtaW4iLCJncm91cHMiOlsxXSwidXNlcmlkIjoxLCJqdGkiOiI5YTY2MGU1N2ExNTkwNDliY2RmMzMwYjlmYmQyMjgyNiIsInNlcnZpY2UiOiJhZG1pbiIsInVzZXJuYW1lIjoiYWRtaW4ifQ.WbIVkp72R2-iQOvnLKKdyyXVi8qJJGHutB1_ZFmcY0s');
       const map = [];
       const promises = [];
       templatesId.forEach((id) => {
