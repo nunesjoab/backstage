@@ -1,5 +1,6 @@
 const configGraphQL = {
   local_url: process.env.LOCAL_URL || 'http://apigw',
+  //local_url: process.env.LOCAL_URL || 'http://localhost',
   local_port: process.env.LOCAL_PORT || '8000',
   auth_internal_url: process.env.AUTH_INTERNAL_URL || 'http://auth',
   auth_internal_port: process.env.AUTH_INTERNAL_PORT || '5000',

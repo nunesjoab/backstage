@@ -91,19 +91,28 @@ const Resolvers = {
      */
     async templatesHasImageFirmware(root, { templatesId }, context) {
       setToken(context.token);
+      //setToken('Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnZW82dVYyamQ4TmtwQ1M4a2lZUkZmSVJqS1N6Rm5MaSIsImlhdCI6MTU1MDA1ODIyMiwiZXhwIjoxNTUwMDU4NjQyLCJwcm9maWxlIjoiYWRtaW4iLCJncm91cHMiOlsxXSwidXNlcmlkIjoxLCJqdGkiOiI5YTY2MGU1N2ExNTkwNDliY2RmMzMwYjlmYmQyMjgyNiIsInNlcnZpY2UiOiJhZG1pbiIsInVzZXJuYW1lIjoiYWRtaW4ifQ.WbIVkp72R2-iQOvnLKKdyyXVi8qJJGHutB1_ZFmcY0s');
       const map = [];
       const promises = [];
       templatesId.forEach((id) => {
         const promise = axios(optionsAxios(UTIL.GET, `/template/${id}`)).then((res) => {
           const { data } = res;
           const { attrs } = data;
+          // count number of reserved label, grouping by label
+          const mapExistAllReserved = new Map();
           if (attrs) {
-            let hasImageFirmware = false;
             attrs.forEach((attr) => {
-              if (hasReservedLabelImg(attr)) {
-                hasImageFirmware = true;
+              if (attr.metadata && attr.metadata.length > 0) {
+                attr.metadata.forEach((meta) => {
+                  if (reservedLabelImg.includes(meta.label)) {
+                    mapExistAllReserved.set(meta.label, true);
+                  }
+                });
               }
             });
+
+            // if the template has all reservedLabelImg, then the template is for ImageFirmware
+            const hasImageFirmware = mapExistAllReserved.size === reservedLabelImg.length;
             map.push({ key: `${id}`, value: `${hasImageFirmware}` });
           }
         }).catch((e) => {
