@@ -31,6 +31,7 @@ const Resolvers = {
      */
     async template(root, { id }, context) {
       setToken(context.token);
+
       const { data: templateData } = await axios(optionsAxios(UTIL.GET, `/template/${id}`));
       const attrImg = [];
 
@@ -90,6 +91,7 @@ const Resolvers = {
      */
     async templatesHasImageFirmware(root, { templatesId }, context) {
       setToken(context.token);
+
       const map = [];
       const promises = [];
       templatesId.forEach((id) => {
