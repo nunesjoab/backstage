@@ -18,7 +18,6 @@ rm -fr ./_static
 git rm -r src -f
 
 git add ./${VERSION}
-git status
 git commit -m 'Updating gh-pages' --amend
 git push --force http://${GITHUB_TOKEN}:x-oauth-basic@github.com/${TRAVIS_REPO_SLUG} gh-pages
 git checkout -- .
