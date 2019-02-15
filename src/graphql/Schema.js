@@ -4,6 +4,7 @@ const commonTypeDefs = require('./common/TypeDefs');
 const templateTypeDefs = require('./template/TypeDefs');
 const templateResolvers = require('./template/Resolvers');
 
+
 const query = [`
 type Query {
    #Get a template by Id
@@ -21,3 +22,4 @@ const resolvers = merge(templateResolvers);
 const executableSchema = makeExecutableSchema({ typeDefs, resolvers });
 
 module.exports = executableSchema;
+module.exports.typeDefs = typeDefs;
