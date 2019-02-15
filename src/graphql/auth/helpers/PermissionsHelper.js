@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const mapPermissionsJson = require('../utils/MapPermissions');
+const mapPermissionsJson = require('./MapPermissions');
 
 class PermissionsHelper {
   /**

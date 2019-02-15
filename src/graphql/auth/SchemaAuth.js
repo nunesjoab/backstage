@@ -4,7 +4,7 @@ const {
 const axios = require('axios');
 const _ = require('lodash');
 const PermissionsHelper = require('./helpers/PermissionsHelper');
-const UTIL = require('./utils/AxiosUtils');
+const UTIL = require('../utils/AxiosUtils');
 const { userDataByToken } = require('../../utils/auth');
 const config = require('../../config');
 

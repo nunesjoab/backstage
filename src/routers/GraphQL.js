@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const expressGraphQL = require('express-graphql');
-const { schemaLogin, schemaPermission } = require('../graphql/schema/Schema');
+const { schemaLogin, schemaPermission } = require('../graphql/auth/SchemaAuth');
+const rootSchema = require('../graphql/Schema');
 
 const router = Router();
 
@@ -20,5 +21,14 @@ router.use('/graphql/permissions', expressGraphQL({
   schema: schemaPermission,
   graphiql: false, // graphql interface
 }));
+
+/**
+ * Create endpoint for  geral
+ */
+router.use('/graphql/', expressGraphQL({
+  schema: rootSchema,
+  graphiql: false, // graphql interface
+}));
+
 
 module.exports = router;
