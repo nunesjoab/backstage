@@ -27,7 +27,7 @@ router.use('/graphql/permissions', expressGraphQL({
  */
 router.use('/graphql/', expressGraphQL({
   schema: rootSchema,
-  graphiql: false, // graphql interface
+  graphiql: true, // graphql interface
 }));
 
 

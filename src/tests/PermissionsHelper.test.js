@@ -52,5 +52,6 @@ const permMockOut = [
 // eslint-disable-next-line no-undef
 test('Test Permission Helper Parses', () => {
   // eslint-disable-next-line no-undef
-  expect(PermissionHelper.parsePermissionsFromAuthBack(permMockIn.permissions)).toMatchObject(permMockOut);
+  expect(PermissionHelper.parsePermissionsFromAuthBack(permMockIn.permissions))
+    .toMatchObject(permMockOut);
 });
