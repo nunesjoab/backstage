@@ -33,7 +33,6 @@ const Resolvers = {
       setToken(context.token);
 
       const { data: templateData } = await axios(optionsAxios(UTIL.GET, `/template/${id}`));
-      /*console.log('templateData', templateData);*/
       const attrImg = [];
 
       function cleanNullMetadataToEmpty(attrs) {
