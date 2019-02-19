@@ -14,7 +14,9 @@ const params = {
   permissionsSystem: [],
 };
 const optionsAxios = ((method, url) => UTIL.optionsAxios(method, url, params.token));
-const setToken = (token => (params.token = token));
+const setToken = ((token) => {
+  params.token = token;
+});
 const getUser = (token => userDataByToken(token));
 
 // The default name of group, this group is fixed on system
@@ -225,13 +227,17 @@ const PermissionsMutationResolve = async (parentValue, { permissions, group }, c
         const actionAlias = PermissionsHelper.getActionAlias(item.path, item.method);
 
         const permOld = _.find(permissionsGroupOld[item.path], g => g.method === item.method && g.permission === 'permit');
-        const permNew = _.find(permissions, g => g.subject === subjectAlias && _.find(g.actions, h => h === actionAlias));
+        const permNew = _.find(permissions,
+          g => g.subject === subjectAlias && _.find(g.actions, h => h === actionAlias));
         if (permOld && permNew) {
           return;
         }
         if (permOld || permNew) {
           const permId = item.id;
-          const { promise, response } = updatePermAssociation(permNew, permId, group, subjectAlias, actionAlias);
+          const {
+            promise,
+            response,
+          } = updatePermAssociation(permNew, permId, group, subjectAlias, actionAlias);
           responses.push(response);
           promises.push(promise);
         }

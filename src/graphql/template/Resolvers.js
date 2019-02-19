@@ -31,6 +31,7 @@ const Resolvers = {
      */
     async template(root, { id }, context) {
       setToken(context.token);
+
       const { data: templateData } = await axios(optionsAxios(UTIL.GET, `/template/${id}`));
       const attrImg = [];
 
@@ -96,6 +97,7 @@ const Resolvers = {
         const promise = axios(optionsAxios(UTIL.GET, `/template/${id}`)).then((res) => {
           const { data } = res;
           const { attrs } = data;
+
           // count number of reserved label, grouping by label
           const mapExistAllReserved = new Map();
           if (attrs) {
