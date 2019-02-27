@@ -266,7 +266,7 @@ const templateId5 = {
         {
           created: '2019-02-14T16:36:43.076620+00:00',
           id: 32,
-          label: 'desired_version',
+          label: 'dojot:firmware_update:desired_version',
           static_value: 'desired_version',
           type: 'desired_version',
           updated: null,
@@ -286,7 +286,7 @@ const templateId5 = {
         {
           created: '2019-02-14T16:36:43.073228+00:00',
           id: 27,
-          label: 'desired_version',
+          label: 'dojot:firmware_update:desired_version',
           static_value: 'desired_version',
           type: 'desired_version',
           updated: null,
@@ -306,7 +306,7 @@ const templateId5 = {
         {
           created: '2019-02-14T16:36:43.076189+00:00',
           id: 31,
-          label: 'state',
+          label: 'dojot:firmware_update:state',
           static_value: 'state',
           type: 'state',
           updated: null,
@@ -326,7 +326,7 @@ const templateId5 = {
         {
           created: '2019-02-14T16:36:43.075128+00:00',
           id: 29,
-          label: 'update',
+          label: 'dojot:firmware_update:update',
           static_value: 'update',
           type: 'update',
           updated: null,
@@ -346,7 +346,7 @@ const templateId5 = {
         {
           created: '2019-02-14T16:36:43.075737+00:00',
           id: 30,
-          label: 'update_result',
+          label: 'dojot:firmware_update:update_result',
           static_value: 'update_result',
           type: 'update_result',
           updated: null,
@@ -366,7 +366,7 @@ const templateId5 = {
         {
           created: '2019-02-14T16:36:43.074386+00:00',
           id: 28,
-          label: 'version',
+          label: 'dojot:firmware_update:version',
           static_value: 'version',
           type: 'version',
           updated: null,
@@ -390,7 +390,7 @@ const templateId5 = {
         {
           created: '2019-02-14T16:36:43.076620+00:00',
           id: 32,
-          label: 'desired_version',
+          label: 'dojot:firmware_update:desired_version',
           static_value: 'desired_version',
           type: 'desired_version',
           updated: null,
@@ -410,7 +410,7 @@ const templateId5 = {
         {
           created: '2019-02-14T16:36:43.073228+00:00',
           id: 27,
-          label: 'desired_version',
+          label: 'dojot:firmware_update:desired_version',
           static_value: 'desired_version',
           type: 'desired_version',
           updated: null,
@@ -430,7 +430,7 @@ const templateId5 = {
         {
           created: '2019-02-14T16:36:43.076189+00:00',
           id: 31,
-          label: 'state',
+          label: 'dojot:firmware_update:state',
           static_value: 'state',
           type: 'state',
           updated: null,
@@ -450,7 +450,7 @@ const templateId5 = {
         {
           created: '2019-02-14T16:36:43.075128+00:00',
           id: 29,
-          label: 'update',
+          label: 'dojot:firmware_update:update',
           static_value: 'update',
           type: 'update',
           updated: null,
@@ -470,7 +470,7 @@ const templateId5 = {
         {
           created: '2019-02-14T16:36:43.075737+00:00',
           id: 30,
-          label: 'update_result',
+          label: 'dojot:firmware_update:update_result',
           static_value: 'update_result',
           type: 'update_result',
           updated: null,
@@ -490,7 +490,7 @@ const templateId5 = {
         {
           created: '2019-02-14T16:36:43.074386+00:00',
           id: 28,
-          label: 'version',
+          label: 'dojot:firmware_update:version',
           static_value: 'version',
           type: 'version',
           updated: null,
