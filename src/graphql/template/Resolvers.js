@@ -10,7 +10,7 @@ const setToken = ((token) => {
 });
 const optionsAxios = ((method, url) => UTIL.optionsAxios(method, url, params.token));
 
-const reservedLabelImg = ['desired_version', 'version', 'update', 'update_result', 'state'];
+const reservedLabelImg = ['dojot:firmware_update:desired_version', 'dojot:firmware_update:version', 'dojot:firmware_update:update', 'dojot:firmware_update:update_result', 'dojot:firmware_update:state'];
 const hasReservedLabelImg = ((attr) => {
   if (attr.metadata && attr.metadata.length > 0) {
     if (attr.metadata.find(meta => reservedLabelImg.includes(meta.label))) {

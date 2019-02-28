@@ -102,7 +102,7 @@ const testGetTemplate = {
             metadata: [
               {
                 id: 32,
-                label: 'desired_version',
+                label: 'dojot:firmware_update:desired_version',
                 static_value: 'desired_version',
                 type: 'desired_version',
                 value_type: 'string',
@@ -122,7 +122,7 @@ const testGetTemplate = {
             metadata: [
               {
                 id: 27,
-                label: 'desired_version',
+                label: 'dojot:firmware_update:desired_version',
                 static_value: 'desired_version',
                 type: 'desired_version',
                 value_type: 'string',
@@ -142,7 +142,7 @@ const testGetTemplate = {
             metadata: [
               {
                 id: 31,
-                label: 'state',
+                label: 'dojot:firmware_update:state',
                 static_value: 'state',
                 type: 'state',
                 value_type: 'string',
@@ -162,7 +162,7 @@ const testGetTemplate = {
             metadata: [
               {
                 id: 29,
-                label: 'update',
+                label: 'dojot:firmware_update:update',
                 static_value: 'update',
                 type: 'update',
                 value_type: 'string',
@@ -182,7 +182,7 @@ const testGetTemplate = {
             metadata: [
               {
                 id: 30,
-                label: 'update_result',
+                label: 'dojot:firmware_update:update_result',
                 static_value: 'update_result',
                 type: 'update_result',
                 value_type: 'string',
@@ -202,7 +202,7 @@ const testGetTemplate = {
             metadata: [
               {
                 id: 28,
-                label: 'version',
+                label: 'dojot:firmware_update:version',
                 static_value: 'version',
                 type: 'version',
                 value_type: 'string',
