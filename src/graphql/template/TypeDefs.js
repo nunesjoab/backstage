@@ -26,7 +26,7 @@ const TypeDefs = [`
      #Value when type is Static
      static_value: String
      #Primary key of a template 
-     template_id: Int
+     template_id: String
      #Can be static, dynamic, etc.
      type: String
      #Can be String, Integer, Float, Geo, etc.
