@@ -65,16 +65,7 @@
       "action": "viewer"
     }
   },
-  "/metric/(.*)": {
-    "subject": "metric",
-    "(.*)": {
-      "action": "modifier"
-    },
-    "GET": {
-      "action": "viewer"
-    }
-  },
-  "/pap/(.*)": {
+  "/auth/pap/(.*)": {
     "subject": "permission",
     "(.*)": {
       "action": "modifier"
