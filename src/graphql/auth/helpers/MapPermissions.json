@@ -49,9 +49,6 @@
   },
   "/history/(.*)": {
     "subject": "history",
-    "(.*)": {
-      "action": "modifier"
-    },
     "GET": {
       "action": "viewer"
     }
