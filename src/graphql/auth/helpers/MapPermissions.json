@@ -31,9 +31,6 @@
   },
   "/export/(.*)": {
     "subject": "export",
-    "(.*)": {
-      "action": "modifier"
-    },
     "GET": {
       "action": "viewer"
     }
@@ -57,9 +54,6 @@
     "subject": "import",
     "(.*)": {
       "action": "modifier"
-    },
-    "GET": {
-      "action": "viewer"
     }
   },
   "/auth/pap/(.*)": {
