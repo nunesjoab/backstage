@@ -17,7 +17,7 @@
   "/sign/(.*)": {
     "subject": "ca-sign",
     "POST": {
-      "action": "modifier"
+      "action": "viewer"
     }
   },
   "/device/(.*)": {
