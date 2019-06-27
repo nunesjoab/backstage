@@ -52,7 +52,7 @@
   },
   "/import/(.*)": {
     "subject": "import",
-    "(.*)": {
+    "POST": {
       "action": "modifier"
     }
   },
