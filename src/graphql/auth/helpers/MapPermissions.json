@@ -71,6 +71,12 @@
       "action": "viewer"
     }
   },
+  "/iotagent-mqtt/metrics": {
+    "subject": "mqqt_metrics",
+    "GET": {
+      "action": "viewer"
+    }
+  },
   "/template/(.*)": {
     "subject": "template",
     "(.*)": {
