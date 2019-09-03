@@ -17,7 +17,7 @@
   "/sign/(.*)": {
     "subject": "ca-sign",
     "POST": {
-      "action": "viewer"
+      "action": "modifier"
     }
   },
   "/device/(.*)": {
@@ -31,9 +31,6 @@
   },
   "/export/(.*)": {
     "subject": "export",
-    "(.*)": {
-      "action": "modifier"
-    },
     "GET": {
       "action": "viewer"
     }
@@ -49,9 +46,6 @@
   },
   "/history/(.*)": {
     "subject": "history",
-    "(.*)": {
-      "action": "modifier"
-    },
     "GET": {
       "action": "viewer"
     }
@@ -60,21 +54,9 @@
     "subject": "import",
     "(.*)": {
       "action": "modifier"
-    },
-    "GET": {
-      "action": "viewer"
     }
   },
-  "/metric/(.*)": {
-    "subject": "metric",
-    "(.*)": {
-      "action": "modifier"
-    },
-    "GET": {
-      "action": "viewer"
-    }
-  },
-  "/pap/(.*)": {
+  "/auth/pap/(.*)": {
     "subject": "permission",
     "(.*)": {
       "action": "modifier"

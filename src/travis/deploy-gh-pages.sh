@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 if [ "${TRAVIS_BRANCH}" == "master" ]
 then
-  export VERSION="latest"
+  export VERSION=""
 else
   export VERSION="${TRAVIS_BRANCH}"
 fi
