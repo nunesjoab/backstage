@@ -4,14 +4,14 @@ const checkconflicts = (id, tenant) => new Promise((resolve, reject) => {
   try {
     let query;
     if (id !== undefined) {
-      query = `select a.template_id, b.template_id as conflict from ${tenant}.attrs a \
-      INNER JOIN ${tenant}.attrs b on a.label = b.label and a.template_id <> b.template_id \
-      where a.template_id in ${id}
-      group by a.template_id, b.template_id order by a.template_id, b.template_id`;
+      query = `SELECT a.template_id, b.template_id AS conflict FROM ${tenant}.attrs a \
+      INNER JOIN ${tenant}.attrs b ON a.label = b.label AND a.template_id <> b.template_id \
+      WHERE a.template_id in ${id}
+      GROUP BY a.template_id, b.template_id ORDER by a.template_id, b.template_id`;
     } else {
-      query = `select a.template_id, b.template_id as conflict from ${tenant}.attrs a \
-      INNER JOIN ${tenant}.attrs b on a.label = b.label and a.template_id <> b.template_id \
-      group by a.template_id, b.template_id order by a.template_id, b.template_id`;
+      query = `SELECT a.template_id, b.template_id AS conflict FROM ${tenant}.attrs a \
+      INNER JOIN ${tenant}.attrs b ON a.label = b.label AND a.template_id <> b.template_id \
+      GROUP BY a.template_id, b.template_id ORDER BY a.template_id, b.template_id`;
     }
 
     db.query(query)
